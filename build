@@ -1,0 +1,7 @@
+#!/bin/zsh
+set -e
+
+for cmd in cmd/*/*.go(:t:r); do
+    artifact_name="screen-$cmd"
+    go build -o target/$artifact_name cmd/$cmd/$cmd.go
+done
