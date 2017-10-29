@@ -1,0 +1,14 @@
+Go implementation of https://github.com/scottjad/screen-utils
+
+* Utilities
+** screen-killshells
+   Used for cleaning up a lot of old, no longer needed windows. Kills
+all the screen windows where the title start with “zsh” or “bash”,
+except the current window. Repacks the window numbers afterward.
+
+* Usage
+bind R exec screen-killshells
+
+* License
+MIT X11
+
