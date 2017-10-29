@@ -11,7 +11,7 @@ func main() {
 	screen.Setup()
 	err := killshells.Killshells()
 	if err != nil {
-		log.Printf("erorr killing shells: %v", err)
+		log.Printf("Error killing shells: %v", err)
 	}
 	screen.Cleanup()
 }
