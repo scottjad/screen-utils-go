@@ -1,7 +1,6 @@
 package killshells
 
 import (
-	"log"
 	"regexp"
 
 	"../repack"
@@ -9,23 +8,28 @@ import (
 	"../windows"
 )
 
-func Killshells() {
+func Killshells() error {
 	const titlesToKill = "^\\s*(zsh|bash|pg|htop|nmtui)"
 
-	initialWindow := screen.CurrentWindow()
-
-	windows := windows.GetWindows()
-	for index, title := range windows {
+	selectedWindow, err := screen.CurrentWindowNumber()
+	if err != nil {
+		return err
+	}
+	for i, title := range windows.GetWindows() {
 
 		match, err := regexp.MatchString(titlesToKill, title)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 
-		if index != initialWindow && match {
-			screen.KillWindow(index)
+		if i != selectedWindow && match {
+			err := screen.KillWindow(i)
+			if err != nil {
+				return err
+			}
 		}
 
 	}
 	repack.Repack()
+	return nil
 }

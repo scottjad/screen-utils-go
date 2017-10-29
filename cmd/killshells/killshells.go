@@ -1,12 +1,17 @@
 package main
 
 import (
+	"log"
+
 	"../../shared/killshells"
 	"../../shared/screen"
 )
 
 func main() {
 	screen.Setup()
-	killshells.Killshells()
+	err := killshells.Killshells()
+	if err != nil {
+		log.Printf("erorr killing shells: %v", err)
+	}
 	screen.Cleanup()
 }

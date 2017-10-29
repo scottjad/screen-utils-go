@@ -11,11 +11,10 @@ var EmptyLimit int = 10
 func GetWindowTitle(windowIndex int) (string, error) {
 	cmd := "screen"
 	args := []string{"-p", strconv.Itoa(windowIndex), "-Q", "title"}
-	// TODO Output should return a []byte, figure out how that gets converted to string, or if they're the same.
 	output, err := exec.Command(cmd, args...).Output()
 	title := string(output)
 	if err != nil {
-		// fmt.Printf("ERROR: Couldn't get window title for window: %d.\n", windowIndex)
+		return "", err
 	}
 	return title, err
 

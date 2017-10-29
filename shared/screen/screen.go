@@ -2,18 +2,15 @@ package screen
 
 import (
 	"fmt"
-	"log"
 	"os/exec"
 	"strconv"
 	"strings"
 )
 
-func SetMsgwait(x int) {
+func SetMsgwait(x int) error {
 	cmd := "screen"
 	args := []string{"-X", "msgwait", strconv.Itoa(x)}
-	if err := exec.Command(cmd, args...).Run(); err != nil {
-		// fmt.Printf("ERROR: Couldn't set msgwait: %d.\n", x)
-	}
+	return exec.Command(cmd, args...).Run()
 }
 
 func Setup() {
@@ -32,17 +29,18 @@ func Renumber(oldIndex int, newIndex int) {
 	}
 }
 
-func KillWindow(index int) {
-	exec.Command("screen", "-p", strconv.Itoa(index), "-X", "kill").Run()
+func KillWindow(index int) error {
+	return exec.Command("screen", "-p", strconv.Itoa(index), "-X", "kill").Run()
 }
 
-func CurrentWindow() int {
+func CurrentWindowNumber() (int, error) {
 	output, err := exec.Command("screen", "-Q", "number").Output()
-	if err != nil {
-		log.Fatal(err)
+	if err == nil {
+		index, err := strconv.Atoi(strings.Split(string(output), " ")[0])
+		return index, err
 	}
-	index, err := strconv.Atoi(strings.Split(string(output), " ")[0])
-	return index
+	return 0, err
+
 }
 
 func SelectWindow(index int) {
